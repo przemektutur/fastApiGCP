@@ -1,38 +1,36 @@
-# crud.py
 from sqlalchemy.orm import Session
-from typing import List
 
-from schemas import CVUpdate
-from models import CV, Experience, Education, Skill
+import models
+import schemas
 
+def create_cv(db: Session, cv: schemas.CVCreate) -> models.CV:
+    db_cv = models.CV(**cv.dict())
+    db.add(db_cv)
+    db.commit()
+    db.refresh(db_cv)
+    return db_cv
 
-fake_db = {
-    "cvs": []
-}
+def get_cv(db: Session, cv_id: int) -> models.CV:
+    return db.query(models.CV).filter(models.CV.id == cv_id).first()
 
-def create_cv(cv: CV) -> CV:
-    fake_db["cvs"].append(cv)
-    return cv
-
-def get_cv(cv_id: int) -> CV:
-    return fake_db["cvs"][cv_id]
-
-def update_cv(db: Session, cv_id: int, cv_update: CVUpdate):
-    db_cv = db.query(CV).filter(CV.id == cv_id).first()
+def update_cv(db: Session, cv_id: int, cv_update: schemas.CVUpdate) -> models.CV:
+    db_cv = db.query(models.CV).filter(models.CV.id == cv_id).first()
     if db_cv is None:
         return None
-
-    for var, value in vars(cv_update).items():
-        if hasattr(db_cv, var) and value is not None:
-            setattr(db_cv, var, value)
+    
+    update_data = cv_update.dict(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(db_cv, key, value)
 
     db.commit()
+    db.refresh(db_cv)
     return db_cv
 
 def delete_cv(db: Session, cv_id: int):
-    db_cv = db.query(CV).filter(CV.id == cv_id).first()
+    db_cv = db.query(models.CV).filter(models.CV.id == cv_id).first()
     if db_cv:
         db.delete(db_cv)
         db.commit()
     else:
         raise Exception(f"CV with id {cv_id} not found")
+
