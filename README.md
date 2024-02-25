@@ -12,6 +12,20 @@ future I will develope this project (who knows!) :)
 
 pip install -r requirements.txt
 
+### Rurn program:
+
+On your system run:
+
+```Bash
+uvicorn app:app --reload
+```
+
+On local web browser app is available on the:
+
+```Python
+http://127.0.0.1:8000
+```
+
 ### Curriculum vitate
 
 Hmmmm, api should do something - this one is using CRUD to show
