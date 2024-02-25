@@ -4,10 +4,12 @@ from database import SessionLocal, engine, Base
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-# Upewnij się, że importujesz konkretne klasy z schemas.py
 from schemas import CVCreate, CV as SchemaCV
+from schemas import CVUpdate, CV as SchemaCV
 import models
+import crud
 from models import CV as ModelCV
+
 
 app = FastAPI()
 
@@ -57,16 +59,13 @@ def read_cv(cv_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="CV not found")
     return db_cv
 
-@app.put("/cvs/{cv_id}", response_model=CV)
-async def update_cv(cv_id: int, cv: CV):
-    try:
-        return crud.update_cv(cv_id, cv)
-    except IndexError:
+@app.put("/cvs/{cv_id}", response_model=SchemaCV)
+def update_cv_endpoint(cv_id: int, cv_update: CVUpdate, db: Session = Depends(get_db)):
+    updated_cv = crud.update_cv(db=db, cv_id=cv_id, cv_update=cv_update)
+    if updated_cv is None:
         raise HTTPException(status_code=404, detail="CV not found")
+    return updated_cv
 
 @app.delete("/cvs/{cv_id}", status_code=204)
-async def delete_cv(cv_id: int):
-    try:
-        crud.delete_cv(cv_id)
-    except IndexError:
-        raise HTTPException(status_code=404, detail="CV not found")
+async def delete_cv(cv_id: int, db: Session = Depends(get_db)):
+    crud.delete_cv(db=db, cv_id=cv_id)

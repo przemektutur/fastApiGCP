@@ -78,6 +78,15 @@ class CVCreate(CVBase):
     skills: List[SkillCreate] = []
 
 
+class CVUpdate(BaseModel):
+    name: Optional[str] = None
+    email: Optional[str] = None
+    # Dodaj inne pola zgodnie z potrzebami
+
+    class Config:
+        orm_mode = True
+
+
 class CV(CVBase):
     id: int
     experience: List[Experience] = []
