@@ -4,8 +4,7 @@ from database import SessionLocal, engine, Base
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from schemas import CVCreate, CV as SchemaCV
-from schemas import CVUpdate, CV as SchemaCV
+from schemas import CVCreate, CVUpdate, CV as SchemaCV
 import models
 import crud
 from models import CV as ModelCV
@@ -60,7 +59,11 @@ def read_cv(cv_id: int, db: Session = Depends(get_db)):
     return db_cv
 
 @app.put("/cvs/{cv_id}", response_model=SchemaCV)
-def update_cv_endpoint(cv_id: int, cv_update: CVUpdate, db: Session = Depends(get_db)):
+def update_cv_endpoint(
+        cv_id: int,
+        cv_update: CVUpdate, 
+        db: Session = Depends(get_db)
+    ):
     updated_cv = crud.update_cv(db=db, cv_id=cv_id, cv_update=cv_update)
     if updated_cv is None:
         raise HTTPException(status_code=404, detail="CV not found")
