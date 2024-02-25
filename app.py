@@ -11,6 +11,7 @@ from schemas import CVCreate, CV
 from database import SessionLocal, engine
 import crud
 import models
+from models import CV as ModelCV
 
 
 app = FastAPI()
@@ -57,12 +58,12 @@ def create_cv(cv_create: CVCreate, db: Session = Depends(get_db)):
     return cv_model
 
 
-@app.get("/cvs/{cv_id}", response_model=CV)
-async def read_cv(cv_id: int):
-    try:
-        return crud.get_cv(cv_id)
-    except IndexError:
+@app.get("/cvs/{cv_id}", response_model=schemas.CV)  # Użyj schematu Pydantic jako response_model
+def read_cv(cv_id: int, db: Session = Depends(get_db)):
+    db_cv = db.query(models.CV).filter(models.CV.id == cv_id).first()  # Użyj modelu SQLAlchemy
+    if db_cv is None:
         raise HTTPException(status_code=404, detail="CV not found")
+    return db_cv
 
 @app.put("/cvs/{cv_id}", response_model=CV)
 async def update_cv(cv_id: int, cv: CV):
