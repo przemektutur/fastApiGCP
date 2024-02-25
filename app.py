@@ -30,7 +30,7 @@ def get_db():
 async def read_root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
-@app.post("/cvs/", response_model=SchemaCV)  # Użyj SchemaCV jako response_model
+@app.post("/cvs/", response_model=SchemaCV)
 def create_cv(cv_create: CVCreate, db: Session = Depends(get_db)):
     cv_model = ModelCV(name=cv_create.name, email=cv_create.email)
     db.add(cv_model)
@@ -52,7 +52,7 @@ def create_cv(cv_create: CVCreate, db: Session = Depends(get_db)):
     db.commit()
     return cv_model
 
-@app.get("/cvs/{cv_id}", response_model=SchemaCV)  # Poprawne użycie SchemaCV
+@app.get("/cvs/{cv_id}", response_model=SchemaCV)
 def read_cv(cv_id: int, db: Session = Depends(get_db)):
     db_cv = db.query(ModelCV).filter(ModelCV.id == cv_id).first()
     if db_cv is None:
