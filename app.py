@@ -1,5 +1,14 @@
-from fastapi import FastAPI, Request, HTTPException, Depends
-from sqlalchemy.orm import Session
+"""Main application module."""
+from fastapi import (
+    FastAPI,
+    Request,
+    HTTPException, 
+    Depends
+)
+from sqlalchemy.orm import (
+    Session,
+    joinedload,
+)
 from database import SessionLocal, engine, Base
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -53,11 +62,12 @@ def create_cv(cv_create: CVCreate, db: Session = Depends(get_db)):
 
 @app.get("/cvs/{cv_id}", response_model=SchemaCV)
 def read_cv(cv_id: int, db: Session = Depends(get_db)):
-    db_cv = db.query(ModelCV).filter(ModelCV.id == cv_id).first()
-    if db_cv is None:
-        raise HTTPException(status_code=404, detail="CV not found")
-    return db_cv
+    return db.query(models.CV).options(
+        joinedload(models.CV.experiences), 
+        joinedload(models.CV.educations)
+    ).filter(models.CV.id == cv_id).first()
 
+"""
 @app.put("/cvs/{cv_id}", response_model=SchemaCV)
 def update_cv_endpoint(
         cv_id: int,
@@ -68,6 +78,26 @@ def update_cv_endpoint(
     if updated_cv is None:
         raise HTTPException(status_code=404, detail="CV not found")
     return updated_cv
+"""
+
+@app.put("/cvs/{cv_id}", response_model=SchemaCV)
+def update_cv(cv_id: int, cv_update: CVUpdate, db: Session = Depends(get_db)):
+    db_cv = db.query(models.CV).filter(models.CV.id == cv_id).first()
+    if db_cv is None:
+        return None
+
+    for var, value in vars(cv_update).items():
+        if value is not None and hasattr(db_cv, var):
+            setattr(db_cv, var, value)
+
+    db.commit()
+    db.refresh(db_cv)
+
+    db_cv = db.query(models.CV).options(
+        joinedload(models.CV.experiences),
+        joinedload(models.CV.educations)
+    ).filter(models.CV.id == cv_id).first()
+    return db_cv
 
 @app.delete("/cvs/{cv_id}", status_code=204)
 async def delete_cv(cv_id: int, db: Session = Depends(get_db)):

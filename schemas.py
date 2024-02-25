@@ -70,6 +70,8 @@ class Skill(SkillBase):
 class CVBase(BaseModel):
     name: str
     email: str
+    experiences: List[Experience] = []
+    educations: List[Education] = []
 
 
 class CVCreate(CVBase):
