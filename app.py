@@ -1,18 +1,13 @@
-# app.py
-
 from fastapi import FastAPI, Request, HTTPException, Depends
 from sqlalchemy.orm import Session
 from database import SessionLocal, engine, Base
-from typing import List
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from schemas import CVCreate, CV 
-from database import SessionLocal, engine
-import crud
+# Upewnij się, że importujesz konkretne klasy z schemas.py
+from schemas import CVCreate, CV as SchemaCV
 import models
 from models import CV as ModelCV
-
 
 app = FastAPI()
 
@@ -22,7 +17,6 @@ Base.metadata.create_all(bind=engine)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
-# Session
 def get_db():
     db = SessionLocal()
     try:
@@ -34,10 +28,9 @@ def get_db():
 async def read_root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
-@app.post("/cvs/", response_model=CV)
+@app.post("/cvs/", response_model=SchemaCV)  # Użyj SchemaCV jako response_model
 def create_cv(cv_create: CVCreate, db: Session = Depends(get_db)):
-    # Tworzenie głównego obiektu CV
-    cv_model = models.CV(name=cv_create.name, email=cv_create.email)
+    cv_model = ModelCV(name=cv_create.name, email=cv_create.email)
     db.add(cv_model)
     db.commit()
     db.refresh(cv_model)
@@ -57,10 +50,9 @@ def create_cv(cv_create: CVCreate, db: Session = Depends(get_db)):
     db.commit()
     return cv_model
 
-
-@app.get("/cvs/{cv_id}", response_model=schemas.CV)  # Użyj schematu Pydantic jako response_model
+@app.get("/cvs/{cv_id}", response_model=SchemaCV)  # Poprawne użycie SchemaCV
 def read_cv(cv_id: int, db: Session = Depends(get_db)):
-    db_cv = db.query(models.CV).filter(models.CV.id == cv_id).first()  # Użyj modelu SQLAlchemy
+    db_cv = db.query(ModelCV).filter(ModelCV.id == cv_id).first()
     if db_cv is None:
         raise HTTPException(status_code=404, detail="CV not found")
     return db_cv
