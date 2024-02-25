@@ -121,4 +121,37 @@ Create payload example:
 
 ### Pictures
 
-Some pictures how it is working
+Picasso pictures of working app ;)
+
+Create request:
+
+![CREATE SEND](pictures/POST001.png)
+
+Create response:
+
+![CREATE RECEIVED](pictures/POST002.png)
+
+Get request
+
+![GET SEND](pictures/GET001.png)
+
+Get response:
+
+![GET RECEIVED](pictures/GET002.png)
+
+Update request
+
+![PUT SEND](pictures/PUT001.png)
+
+Update response:
+
+![PUT RECEIVED](pictures/PUT002.png)
+
+Delete request
+
+![Delete SEND](pictures/DEL001.png)
+
+Delete response:
+
+![Delete RECEIVED](pictures/DEL002.png)
+
