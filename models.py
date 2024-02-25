@@ -24,3 +24,4 @@ class CV(BaseModel):
     experience: List[Experience]
     education: List[Education]
     skills: List[Skill]
+
