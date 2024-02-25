@@ -1,80 +1,42 @@
-from pydantic import BaseModel
-from typing import List, Optional
-from datetime import date
+from sqlalchemy import Column, Integer, String, Date, ForeignKey
+from sqlalchemy.orm import relationship
+from database import Base
 
 
-class ExperienceBase(BaseModel):
-    company: str
-    position: str
-    from_date: date
-    to_date: Optional[date] = None
-    description: Optional[str] = None
+class Experience(Base):
+    __tablename__ = "experiences"
+    id = Column(Integer, primary_key=True, index=True)
+    company = Column(String, index=True)
+    position = Column(String, index=True)
+    from_date = Column(Date)
+    to_date = Column(Date, nullable=True)
+    description = Column(String, nullable=True)
+    cv_id = Column(Integer, ForeignKey("cvs.id"))
 
 
-class ExperienceCreate(ExperienceBase):
-    pass
+class Education(Base):
+    __tablename__ = "educations"
+    id = Column(Integer, primary_key=True, index=True)
+    institution = Column(String, index=True)
+    degree = Column(String, index=True)
+    from_date = Column(Date)
+    to_date = Column(Date, nullable=True)
+    cv_id = Column(Integer, ForeignKey("cvs.id"))
 
 
-class Experience(ExperienceBase):
-    id: int
-    cv_id: int
-
-    class Config:
-        orm_mode = True
-
-
-class EducationBase(BaseModel):
-    institution: str
-    degree: str
-    from_date: date
-    to_date: Optional[date] = None
+class Skill(Base):
+    __tablename__ = "skills"
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, index=True)
+    level = Column(String, index=True)
+    cv_id = Column(Integer, ForeignKey('cvs.id'))
 
 
-class EducationCreate(EducationBase):
-    pass
-
-
-class Education(EducationBase):
-    id: int
-    cv_id: int
-
-    class Config:
-        orm_mode = True
-
-
-class SkillBase(BaseModel):
-    name: str
-    level: str
-
-
-class SkillCreate(SkillBase):
-    pass
-
-
-class Skill(SkillBase):
-    id: int
-    cv_id: int
-
-    class Config:
-        orm_mode = True
-
-
-class CVBase(BaseModel):
-    name: str
-    email: str
-
-
-class CVCreate(CVBase):
-    experience: List[ExperienceCreate] = []
-    education: List[EducationCreate] = []
-    skills: List[SkillCreate] = []
-
-
-class CV(CVBase):
-    id: int
-    experience: List[Experience] = []
-    education: List[Education] = []
-    skills: List[Skill] = []
-
-    class Config:
-        orm_mode = True
+class CV(Base):
+    __tablename__ = "cvs"
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, index=True)
+    email = Column(String, unique=True, index=True)
+    experiences = relationship("Experience", back_populates="cv")
+    educations = relationship("Education", back_populates="cv")
+    skills = relationship("Skill", back_populates="cv")
