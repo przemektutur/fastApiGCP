@@ -11,8 +11,12 @@ class ExperienceBase(BaseModel):
     description: Optional[str] = None
 
 
-class ExperienceCreate(ExperienceBase):
-    pass
+class ExperienceCreate(BaseModel):
+    company: str
+    position: str
+    from_date: date
+    to_date: Optional[date] = None
+    description: Optional[str] = None
 
 
 class Experience(ExperienceBase):
@@ -31,7 +35,10 @@ class EducationBase(BaseModel):
 
 
 class EducationCreate(EducationBase):
-    pass
+    institution: str
+    degree: str
+    from_date: date
+    to_date: Optional[date] = None
 
 
 class Education(EducationBase):
@@ -48,7 +55,8 @@ class SkillBase(BaseModel):
 
 
 class SkillCreate(SkillBase):
-    pass
+    name: str
+    level: str
 
 
 class Skill(SkillBase):
