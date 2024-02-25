@@ -33,17 +33,8 @@ def get_db():
 async def read_root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
-'''
 @app.post("/cvs/", response_model=CV)
-def create_cv(cv: CVCreate, db: Session = Depends(get_db)):
-    db_cv = CV(**cv.dict())
-    db.add(db_cv)
-    db.commit()
-    db.refresh(db_cv)
-    return db_cv
-'''
-@app.post("/cvs/", response_model=schemas.CV)
-def create_cv(cv_create: schemas.CVCreate, db: Session = Depends(get_db)):
+def create_cv(cv_create: CVCreate, db: Session = Depends(get_db)):
     # Tworzenie głównego obiektu CV
     cv_model = models.CV(name=cv_create.name, email=cv_create.email)
     db.add(cv_model)

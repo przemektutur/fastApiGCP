@@ -12,6 +12,7 @@ class Experience(Base):
     to_date = Column(Date, nullable=True)
     description = Column(String, nullable=True)
     cv_id = Column(Integer, ForeignKey("cvs.id"))
+    cv = relationship("CV", back_populates="experiences")
 
 
 class Education(Base):
@@ -22,6 +23,7 @@ class Education(Base):
     from_date = Column(Date)
     to_date = Column(Date, nullable=True)
     cv_id = Column(Integer, ForeignKey("cvs.id"))
+    cv = relationship("CV", back_populates="educations")
 
 
 class Skill(Base):
@@ -30,6 +32,7 @@ class Skill(Base):
     name = Column(String, index=True)
     level = Column(String, index=True)
     cv_id = Column(Integer, ForeignKey('cvs.id'))
+    cv = relationship("CV", back_populates="skills")
 
 
 class CV(Base):
