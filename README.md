@@ -2,11 +2,32 @@
 
 ### REST API
 
-Simple rest api example (without authentication, authorization,
+Example of rest API - passibility to create, read, update and
 
-tests, etc, etc.) was created to show basic skills. Maybe in the
+delete CV (curriculum vitae) from databes. Code writen in python
 
-future I will develope this project (who knows!) :)
+and fastapi was used. SQLAchemy used to work with database
+
+(sqlite - for demo purpose, but I will use posgressql when
+
+migrate to GCP). But before this happens I will 'dockerize' it.
+
+In the 'prod' environment, for demo use, I will create couple
+
+pods, service and deployment.
+
+
+```marmaid
+graph LR
+    user[User] -->|REST API Calls| fa[FastAPI Application]
+    fa -->|ORM| sqla[SQLAlchemy]
+    sqla -->|SQLite/PostgreSQL| db[(Database)]
+    fa -->|Dockerized| docker[Docker Container]
+    docker -->|Deployed in| k8s[Kubernetes Cluster]
+    k8s -->|Manages| pods[Pods]
+    k8s -->|Exposes| svc[Service]
+    k8s -->|Orchestrates| deploy[Deployment]
+```
 
 ### Dependencies
 
