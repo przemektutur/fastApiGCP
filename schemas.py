@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing import (
-    List, 
+    List,
     Optional,
 )
 from datetime import date
@@ -48,7 +48,7 @@ class ExperienceCreate(BaseModel):
 
 class Experience(ExperienceBase):
     """
-    A Pydantic model for representing an experience entry, extending 
+    A Pydantic model for representing an experience entry, extending
     ExperienceBase with database ID and CV ID.
 
     Attributes:
@@ -92,7 +92,7 @@ class EducationCreate(EducationBase):
 
 class Education(EducationBase):
     """
-    A Pydantic model for representing an education entry, extending 
+    A Pydantic model for representing an education entry, extending
     EducationBase with database ID and CV ID.
 
     Attributes:
@@ -132,7 +132,7 @@ class SkillCreate(SkillBase):
 
 class Skill(SkillBase):
     """
-    A Pydantic model for representing a skill entry, extending 
+    A Pydantic model for representing a skill entry, extending
     SkillBase with database ID and CV ID.
 
     Attributes:
@@ -164,7 +164,7 @@ class CVBase(BaseModel):
 
 class CVCreate(CVBase):
     """
-    Pydantic model for creating a new CV, including lists of 
+    Pydantic model for creating a new CV, including lists of
     experiences, educations, and skills to be associated with the CV.
     """
     experience: List[ExperienceCreate] = []
@@ -174,7 +174,7 @@ class CVCreate(CVBase):
 
 class CVUpdate(BaseModel):
     """
-    Pydantic model for updating an existing CV. 
+    Pydantic model for updating an existing CV.
     Fields are optional and only provided fields will be updated.
 
     Attributes:
@@ -191,7 +191,7 @@ class CVUpdate(BaseModel):
 
 class CV(CVBase):
     """
-    A comprehensive Pydantic model for representing a CV, 
+    A comprehensive Pydantic model for representing a CV,
     including its associated experiences, educations, and skills.
 
     Attributes:

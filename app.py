@@ -4,7 +4,7 @@ from typing import Iterator
 from fastapi import (
     FastAPI,
     Request,
-    HTTPException, 
+    HTTPException,
     Depends,
 )
 from sqlalchemy.orm import (
@@ -12,8 +12,8 @@ from sqlalchemy.orm import (
     joinedload,
 )
 from database import (
-    SessionLocal, 
-    engine, 
+    SessionLocal,
+    engine,
     Base,
 )
 from fastapi.staticfiles import StaticFiles
@@ -117,14 +117,14 @@ def read_cv(cv_id: int, db: Session = Depends(get_db)) -> SchemaCV:
     SchemaCV: The requested CV as a Pydantic model.
     """
     return db.query(models.CV).options(
-        joinedload(models.CV.experiences), 
+        joinedload(models.CV.experiences),
         joinedload(models.CV.educations)
     ).filter(models.CV.id == cv_id).first()
 
 @app.put("/cvs/{cv_id}", response_model=SchemaCV)
 def update_cv(
-        cv_id: int, 
-        cv_update: CVUpdate, 
+        cv_id: int,
+        cv_update: CVUpdate,
         db: Session = Depends(get_db)
     ) -> SchemaCV:
     """
