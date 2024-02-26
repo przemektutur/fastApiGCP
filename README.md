@@ -2,19 +2,110 @@
 
 ### REST API
 
+# Project Overview
+
+This project demonstrates a RESTful API for managing Curriculum Vitae (CV) 
+
+entries, showcasing CRUD operations (Create, Read, Update, Delete) on a 
+
+database. It's written in Python, leveraging FastAPI for the web framework 
+
+and SQLAlchemy for ORM interactions with the database. Initially set up with 
+
+SQLite for demonstration, it's intended to migrate to PostgreSQL on Google 
+
+Cloud Platform (GCP) for production. The application will be containerized 
+
+using Docker, enhancing deployment flexibility and scalability.
+
+## Architecture
+
+The application's architecture is designed to be modular and scalable, 
+
+following microservices principles and ready for deployment in a Kubernetes 
+
+cluster. Below is a high-level overview of the components:
+
+- **FastAPI Application**: Serves as the core of the project, handling HTTP 
+
+requests, executing business logic, and performing CRUD operations on the 
+
+database through SQLAlchemy.
+
+- **SQLAlchemy**: Acts as the ORM layer, abstracting database interactions 
+
+and ensuring compatibility with different database systems, like SQLite and 
+
+PostgreSQL.
+
+- **Database**: Stores CV data. SQLite is used for initial development and 
+
+testing, with plans to use PostgreSQL in the production environment on GCP.
+
+- **Docker**: Containerizes the FastAPI application, ensuring consistent 
+
+environments across development, testing, and production.
+
+- **Kubernetes**: Orchestrates the deployment, scaling, and management of 
+
+the containerized application, utilizing Pods, Services, and Deployments 
+
+for a robust and scalable system.
+
+### Deployment Flow
+
+1. **Development**: The application is developed locally, using SQLite for 
+
+ease of setup and rapid testing.
+
+2. **Containerization**: The application is packaged into a Docker container, 
+
+encapsulating dependencies and runtime environment.
+
+3. **Deployment to Kubernetes**: The Dockerized application is deployed to a 
+
+Kubernetes cluster. This could be a local cluster (e.g., minikube) or a 
+
+cloud-based one (GCP).
+
+4. **Kubernetes Orchestration**: Kubernetes manages the application's 
+
+lifecycle, from scaling based on load to rolling updates for new versions.
+
+
 ## Features
 
-- **RESTful API**: Exposes endpoints for managing CV entries, adhering to REST principles for ease of use and integration.
-- **CRUD Operations**: Supports full lifecycle management of CV data, including creating, viewing, updating, and deleting entries.
-- **Database Abstraction**: Utilizes SQLAlchemy for ORM, facilitating future migrations to other database systems like PostgreSQL without significant code changes.
-- **Containerization and Orchestration**: Leverages Docker and Kubernetes for scalable, reliable deployment and management of the application.
+- **RESTful API**: Exposes endpoints for managing CV entries, adhering to 
+
+REST principles for ease of use and integration.
+
+- **CRUD Operations**: Supports full lifecycle management of CV data, 
+
+including creating, viewing, updating, and deleting entries.
+
+- **Database Abstraction**: Utilizes SQLAlchemy for ORM, facilitating future 
+
+migrations to other database systems like PostgreSQL without significant code 
+
+changes.
+
+- **Containerization and Orchestration**: Leverages Docker and Kubernetes for 
+
+scalable, reliable deployment and management of the application.
 
 ## Future Enhancements
 
-- **Authentication and Authorization**: Implement mechanisms to secure the API, ensuring that only authorized users can perform certain operations.
-- **CI/CD Integration**: Set up continuous integration and deployment pipelines for automated testing and deployment.
-- **Advanced Features**: Consider adding advanced functionalities like search, pagination, and filtering for the API endpoints.
+- **Authentication and Authorization**: Implement mechanisms to secure the 
 
+API, ensuring that only authorized users can perform certain operations.
+
+- **CI/CD Integration**: Set up continuous integration and deployment pipelines
+
+ for automated testing and deployment.
+
+- **Advanced Features**: Considering adding advanced functionalities like 
+
+search, pagination, and filtering for the API endpoints.
 
 
 ```marmaid
@@ -48,10 +139,6 @@ http://127.0.0.1:8000
 ```
 
 ### Curriculum vitate
-
-Hmmmm, api should do something - this one is using CRUD to show
-
-my CV - cv can be created, updated, get and deleted (in form of
 
 JSON input/output).
 
