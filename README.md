@@ -2,19 +2,19 @@
 
 ### REST API
 
-Example of rest API - passibility to create, read, update and
+## Features
 
-delete CV (curriculum vitae) from databes. Code writen in python
+- **RESTful API**: Exposes endpoints for managing CV entries, adhering to REST principles for ease of use and integration.
+- **CRUD Operations**: Supports full lifecycle management of CV data, including creating, viewing, updating, and deleting entries.
+- **Database Abstraction**: Utilizes SQLAlchemy for ORM, facilitating future migrations to other database systems like PostgreSQL without significant code changes.
+- **Containerization and Orchestration**: Leverages Docker and Kubernetes for scalable, reliable deployment and management of the application.
 
-and fastapi was used. SQLAchemy used to work with database
+## Future Enhancements
 
-(sqlite - for demo purpose, but I will use posgressql when
+- **Authentication and Authorization**: Implement mechanisms to secure the API, ensuring that only authorized users can perform certain operations.
+- **CI/CD Integration**: Set up continuous integration and deployment pipelines for automated testing and deployment.
+- **Advanced Features**: Consider adding advanced functionalities like search, pagination, and filtering for the API endpoints.
 
-migrate to GCP). But before this happens I will 'dockerize' it.
-
-In the 'prod' environment, for demo use, I will create couple
-
-pods, service and deployment.
 
 
 ```marmaid
